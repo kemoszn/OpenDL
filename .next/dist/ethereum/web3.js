@@ -10,7 +10,7 @@ var _web2 = _interopRequireDefault(_web);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var infura = "https://rinkeby.infura.io/v3/e48ca808c46648668f01b63e67d65d7f";
+var infura = "https://rinkeby.infura.io/v3/315df566c9244aa2b9608a31ba46bc8a";
 var web3 = void 0;
 
 if (typeof window !== "undefined" && typeof window.web3 !== "undefined") {
