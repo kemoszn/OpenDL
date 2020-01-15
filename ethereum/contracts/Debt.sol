@@ -42,6 +42,19 @@ contract Debt {
     function verifyDebt() public onlyBorrower{
         is_verified = true;
     }
+
+    function getDetails() public view returns (
+      address, address, uint, string, bool, bool
+      ) {
+        return (
+          lender,
+          borrower,
+          amount,
+          description,
+          is_settled,
+          is_verified
+        );
+    }
     
     modifier onlyBorrower() {
      require(msg.sender == borrower);
