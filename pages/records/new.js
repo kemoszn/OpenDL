@@ -28,7 +28,7 @@ class NewRecord extends Component {
             
             Router.pushRoute('/records');
         } catch(err) {
-             this.setState({ errorMessage: err.message });
+             this.setState({ loading: false, errorMessage: err.message });
         }
         
     }
