@@ -4,6 +4,7 @@ import factory from '../ethereum/factory';
 import { render } from 'react-dom';
 import Layout from '../components/Layout';
 import web3 from '../ethereum/web3';
+import { Link } from '../routes';
 
 class Dashboard extends Component {
     static async getInitialProps(){
@@ -18,7 +19,11 @@ class Dashboard extends Component {
         const items = this.props.debts.map (address => {
             return {
                 header: address,
-                description: <a>View details</a>,
+                description: (
+                    <Link route={`/records/${address}`}>
+                        <a>View Campaign</a>
+                    </Link>
+        ),
                 fluid: true
             };
         });
@@ -31,12 +36,15 @@ class Dashboard extends Component {
         return ( <Layout> 
         <div>
                 <h1>Open Debts Ledger</h1>
-                <Button
+               <Link route="/records/new"> 
+               <a> <Button
                 content="Add Record"
                 icon="add circle"
                 primary
-                /> <br/><br/> </div>
-                <div>{this.renderDebts()}</div>
+                />  </a>
+                </Link> <br/> 
+                {this.renderDebts()}
+                </div>
                 
                 
                 </Layout>
