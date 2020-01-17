@@ -5,7 +5,7 @@ contract DebtFactory {
     
     function createDebt(uint _amount, address _borrower, string _description) public {
         require (msg.sender != _borrower);
-        address newDebt = new Debt(_amount, _borrower, _description);
+        address newDebt = new Debt(_amount, msg.sender, _borrower, _description);
         debts.push(newDebt);
     }
     
@@ -23,8 +23,8 @@ contract Debt {
     bool public is_verified;
     
     
-    function Debt(uint _amount, address _borrower, string _description) public {
-        lender = msg.sender;
+    function Debt(uint _amount, address _lender, address _borrower, string _description) public {
+        lender = _lender;
         amount = _amount;
         borrower = _borrower;
         description = _description;
