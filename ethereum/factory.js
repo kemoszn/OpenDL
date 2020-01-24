@@ -3,7 +3,7 @@ import DebtFactory from './build/DebtFactory.json'
 
 const instance = new web3.eth.Contract(
   JSON.parse(DebtFactory.interface),
-  "0xeb0Fcf7805d6418198bA124B655E3458b753cAc7"
+  "0x0A0b7586c9AdAB158CfF11DE93e4a89c70733840"
 );
 
 export default instance;

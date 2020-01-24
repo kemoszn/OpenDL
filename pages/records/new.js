@@ -13,7 +13,8 @@ class NewRecord extends Component {
         borrower: "",
         amount: "",
         errorMessage: "",
-        loading: false
+        loading: false,
+        redirectedAddress: ""
     }
 
     onSubmit = async (event)=> {
@@ -22,11 +23,13 @@ class NewRecord extends Component {
         this.setState({ loading: true, errorMessage: '' });
         try {
             const accounts = await web3.eth.getAccounts();
+            //const address = await factory.events.ContractCreated
             await factory.methods
                 .createDebt(this.state.amount, this.state.borrower, this.state.description)
-                .send({from: accounts[0]}).then(console.log(accounts[0]));
-            
-            Router.pushRoute('/records');
+                .send({from: accounts[0]})
+                .then((receipt) => this.setState({ redirectedAddress: receipt.events.ContractCreated.returnValues[0] })
+                );
+            Router.pushRoute(`/records/${this.state.redirectedAddress}`);
         } catch(err) {
              this.setState({ loading: false, errorMessage: err.message });
         }

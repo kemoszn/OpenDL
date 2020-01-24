@@ -4,11 +4,12 @@ contract DebtFactory {
     address[] public debts;
     event ContractCreated(address newAddress);
     
-    function createDebt(uint _amount, address _borrower, string _description) public {
+    function createDebt(uint _amount, address _borrower, string _description) public returns (address){
         require (msg.sender != _borrower);
         address newDebt = new Debt(_amount, msg.sender, _borrower, _description);
         debts.push(newDebt);
         ContractCreated(newDebt);
+        return newDebt;
     }
     
     function getDeployedDebts() public view returns (address[]){
