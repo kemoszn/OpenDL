@@ -23,9 +23,15 @@ class NewRecord extends Component {
         this.setState({ loading: true, errorMessage: '' });
         try {
             const accounts = await web3.eth.getAccounts();
-            //const address = await factory.events.ContractCreated
+            
+            await web3.eth.sendTransaction({
+                from: accounts[0],
+                to: this.state.borrower,
+                value: web3.utils.toWei(this.state.amount, 'ether')
+            });
+
             await factory.methods
-                .createDebt(this.state.amount, this.state.borrower, this.state.description)
+                .createDebt(web3.utils.toWei(this.state.amount, 'ether'), this.state.borrower, this.state.description)
                 .send({from: accounts[0]})
                 .then((receipt) => this.setState({ redirectedAddress: receipt.events.ContractCreated.returnValues[0] })
                 );
@@ -39,7 +45,7 @@ class NewRecord extends Component {
     render(){
         return (
             <Layout>
-              <br/> <h3> New Debt Record </h3>
+              <br/> 
             <Form onSubmit={this.onSubmit} error={!!this.state.errorMessage}>
                 <Form.Field>
                     <label> Description</label>
@@ -53,13 +59,13 @@ class NewRecord extends Component {
                         </Form.Field>
                         <Form.Field>
                     <label> Amount</label>
-                    <Input  label="Wei" width={8}
+                    <Input  label="ETH" width={8}
                         labelPosition="right"
                         value={this.state.amount}
                         onChange={event => this.setState ({ amount: event.target.value}) }/>
                 </Form.Field>
                 <Message error header="Oops!" content={this.state.errorMessage}/>
-                <Button loading={this.state.loading} primary> Submit </Button>
+                <Button loading={this.state.loading} primary> Send </Button>
             </Form>
             </Layout>
         );

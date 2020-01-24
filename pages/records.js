@@ -21,7 +21,7 @@ class Dashboard extends Component {
                 header: address,
                 description: (
                     <Link route={`/records/${address}`}>
-                        <a>View Campaign</a>
+                        <a>Contract Details</a>
                     </Link>
         ),
                 fluid: true

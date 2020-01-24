@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Layout from '../../components/Layout';
 import Debt from '../../ethereum/debt';
 import web3 from '../../ethereum/web3';
-import { Card } from 'semantic-ui-react';
+import { Card, Button,Icon } from 'semantic-ui-react';
 
 class Detail extends Component {
     static async getInitialProps(props) {
@@ -13,41 +13,35 @@ class Detail extends Component {
       address: props.query.address,
       lender: details[0],
       borrower: details[1],
-      amount: details[2],
+      amount: web3.utils.fromWei(details[2],'ether'),
       description: details[3],
-      isSettled: details[4],
-      isVerified: details[5]
+      isSettled: details[4]
     };
     }
     renderDetails() {
-        console.log(this.props.isSettled);
     const {
       address,  
       lender,
       borrower,
       amount,
       description,
-      isSettled,
-      isVerified
+      isSettled
     } = this.props;
-    let isVerifiedString = isVerified;
     let isSettledString = isSettled;
-    if (isVerified == false) {
-        isVerifiedString = 'False'
-    } else { isVerifiedString = 'True'}
     if (isSettled == false){
-        isSettledString = 'False'
-    } else { isVerifiedString = 'True'}
+        isSettledString = 'times circle'
+    } else { isSettledString = 'check circle'}
     const items = [
       {
-        header: address,
-        meta: (<div><b>Debt amount: </b>{amount}  Wei</div>),
+        header: <h3 style={{color: "#2185d0" }}>{address}</h3>,
+        meta: (<div><b>Debt amount: </b>{amount}  ETH</div>),
         description:
           (<div>
+          <b>Description: </b>{description} <br/>
          <b> Lender:</b> {lender} <br/>
          <b> borrower: </b>{borrower}
-         <br/> <b> Verified: </b> {isVerifiedString} 
-         <br/> <b> Settled: </b> {isSettledString} 
+         <br/> <b> Settled: </b> <Icon name={isSettledString} />  <br/><hr/>
+         <Button primary size="small"> Settle </Button>
           </div>),
           fluid: true
       }]
@@ -59,9 +53,10 @@ class Detail extends Component {
     render() {
         return (
             <Layout>
-            <div>
-            <h4>Debt Contract Details  </h4>
+            <div> <br/>
+            <h3>Debt Contract Details  </h3>
             {this.renderDetails()}
+            <h3>Transaction Receipt</h3>
             </div>
             </Layout>
         )

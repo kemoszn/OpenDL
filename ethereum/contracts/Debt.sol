@@ -23,7 +23,6 @@ contract Debt {
     address public lender;
     string public description;
     bool public is_settled;
-    bool public is_verified;
     
     
     function Debt(uint _amount, address _lender, address _borrower, string _description) public {
@@ -32,30 +31,21 @@ contract Debt {
         borrower = _borrower;
         description = _description;
         is_settled = false;
-        is_verified = false;
     }
     
-    function settleDebt() public payable onlyBorrower{
-        require (msg.value == amount);
-        require (is_verified == true);
-        lender.transfer(msg.value);
+    function settleDebt() public onlyBorrower{
         is_settled = true;
     } 
-    
-    function verifyDebt() public onlyBorrower{
-        is_verified = true;
-    }
 
     function getDetails() public view returns (
-      address, address, uint, string, bool, bool
+      address, address, uint, string, bool
       ) {
         return (
           lender,
           borrower,
           amount,
           description,
-          is_settled,
-          is_verified
+          is_settled
         );
     }
     

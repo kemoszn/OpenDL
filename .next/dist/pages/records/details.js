@@ -67,88 +67,102 @@ var Detail = function (_Component) {
     (0, _createClass3.default)(Detail, [{
         key: 'renderDetails',
         value: function renderDetails() {
-            console.log(this.props.isSettled);
             var _props = this.props,
                 address = _props.address,
                 lender = _props.lender,
                 borrower = _props.borrower,
                 amount = _props.amount,
                 description = _props.description,
-                isSettled = _props.isSettled,
-                isVerified = _props.isVerified;
+                isSettled = _props.isSettled;
 
-            var isVerifiedString = isVerified;
             var isSettledString = isSettled;
-            if (isVerified == false) {
-                isVerifiedString = 'False';
-            } else {
-                isVerifiedString = 'True';
-            }
             if (isSettled == false) {
-                isSettledString = 'False';
+                isSettledString = 'times circle';
             } else {
-                isVerifiedString = 'True';
+                isSettledString = 'check circle';
             }
             var items = [{
-                header: address,
+                header: _react2.default.createElement('h3', { style: { color: "#2185d0" }, __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 36
+                    }
+                }, address),
                 meta: _react2.default.createElement('div', {
                     __source: {
                         fileName: _jsxFileName,
-                        lineNumber: 44
+                        lineNumber: 37
                     }
                 }, _react2.default.createElement('b', {
                     __source: {
                         fileName: _jsxFileName,
-                        lineNumber: 44
+                        lineNumber: 37
                     }
-                }, 'Debt amount: '), amount, '  Wei'),
+                }, 'Debt amount: '), amount, '  ETH'),
                 description: _react2.default.createElement('div', {
                     __source: {
                         fileName: _jsxFileName,
-                        lineNumber: 46
+                        lineNumber: 39
                     }
                 }, _react2.default.createElement('b', {
                     __source: {
                         fileName: _jsxFileName,
-                        lineNumber: 47
+                        lineNumber: 40
                     }
-                }, ' Lender:'), ' ', lender, ' ', _react2.default.createElement('br', {
+                }, 'Description: '), description, ' ', _react2.default.createElement('br', {
                     __source: {
                         fileName: _jsxFileName,
-                        lineNumber: 47
+                        lineNumber: 40
                     }
                 }), _react2.default.createElement('b', {
                     __source: {
                         fileName: _jsxFileName,
-                        lineNumber: 48
+                        lineNumber: 41
+                    }
+                }, ' Lender:'), ' ', lender, ' ', _react2.default.createElement('br', {
+                    __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 41
+                    }
+                }), _react2.default.createElement('b', {
+                    __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 42
                     }
                 }, ' borrower: '), borrower, _react2.default.createElement('br', {
                     __source: {
                         fileName: _jsxFileName,
-                        lineNumber: 49
+                        lineNumber: 43
                     }
                 }), ' ', _react2.default.createElement('b', {
                     __source: {
                         fileName: _jsxFileName,
-                        lineNumber: 49
+                        lineNumber: 43
                     }
-                }, ' Verified: '), ' ', isVerifiedString, _react2.default.createElement('br', {
+                }, ' Settled: '), ' ', _react2.default.createElement(_semanticUiReact.Icon, { name: isSettledString, __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 43
+                    }
+                }), '  ', _react2.default.createElement('br', {
                     __source: {
                         fileName: _jsxFileName,
-                        lineNumber: 50
+                        lineNumber: 43
                     }
-                }), ' ', _react2.default.createElement('b', {
+                }), _react2.default.createElement('hr', {
                     __source: {
                         fileName: _jsxFileName,
-                        lineNumber: 50
+                        lineNumber: 43
                     }
-                }, ' Settled: '), ' ', isSettledString),
+                }), _react2.default.createElement(_semanticUiReact.Button, { primary: true, size: 'small', __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 44
+                    }
+                }, ' Settle ')),
                 fluid: true
             }];
 
             return _react2.default.createElement(_semanticUiReact.Card.Group, { items: items, __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 55
+                    lineNumber: 49
                 }
             });
         }
@@ -158,19 +172,29 @@ var Detail = function (_Component) {
             return _react2.default.createElement(_Layout2.default, {
                 __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 61
+                    lineNumber: 55
                 }
             }, _react2.default.createElement('div', {
                 __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 62
+                    lineNumber: 56
                 }
-            }, _react2.default.createElement('h4', {
+            }, ' ', _react2.default.createElement('br', {
                 __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 63
+                    lineNumber: 56
                 }
-            }, 'Debt Contract Details  '), this.renderDetails()));
+            }), _react2.default.createElement('h3', {
+                __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 57
+                }
+            }, 'Debt Contract Details  '), this.renderDetails(), _react2.default.createElement('h3', {
+                __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 59
+                }
+            }, 'Transaction Receipt')));
         }
     }], [{
         key: 'getInitialProps',
@@ -191,10 +215,9 @@ var Detail = function (_Component) {
                                     address: props.query.address,
                                     lender: details[0],
                                     borrower: details[1],
-                                    amount: details[2],
+                                    amount: _web2.default.utils.fromWei(details[2], 'ether'),
                                     description: details[3],
-                                    isSettled: details[4],
-                                    isVerified: details[5]
+                                    isSettled: details[4]
                                 });
 
                             case 5:
@@ -217,4 +240,4 @@ var Detail = function (_Component) {
 }(_react.Component);
 
 exports.default = Detail;
-//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhZ2VzL3JlY29yZHMvZGV0YWlscy5qcyJdLCJuYW1lcyI6WyJSZWFjdCIsIkNvbXBvbmVudCIsIkxheW91dCIsIkRlYnQiLCJ3ZWIzIiwiQ2FyZCIsIkRldGFpbCIsImNvbnNvbGUiLCJsb2ciLCJwcm9wcyIsImlzU2V0dGxlZCIsImFkZHJlc3MiLCJsZW5kZXIiLCJib3Jyb3dlciIsImFtb3VudCIsImRlc2NyaXB0aW9uIiwiaXNWZXJpZmllZCIsImlzVmVyaWZpZWRTdHJpbmciLCJpc1NldHRsZWRTdHJpbmciLCJpdGVtcyIsImhlYWRlciIsIm1ldGEiLCJmbHVpZCIsInJlbmRlckRldGFpbHMiLCJkZWJ0IiwicXVlcnkiLCJtZXRob2RzIiwiZ2V0RGV0YWlscyIsImNhbGwiLCJkZXRhaWxzIl0sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBQUEsQUFBTyxBQUFTOzs7O0FBQ2hCLEFBQU8sQUFBWTs7OztBQUNuQixBQUFPLEFBQVU7Ozs7QUFDakIsQUFBTyxBQUFVOzs7O0FBQ2pCLEFBQVM7Ozs7Ozs7SSxBQUVIOzs7Ozs7Ozs7Ozt3Q0FlYyxBQUNaO29CQUFBLEFBQVEsSUFBSSxLQUFBLEFBQUssTUFETCxBQUNaLEFBQXVCO3lCQVN2QixLQVZZLEFBVVA7Z0JBVk8sQUFHZCxpQkFIYyxBQUdkO2dCQUhjLEFBSWQsZ0JBSmMsQUFJZDtnQkFKYyxBQUtkLGtCQUxjLEFBS2Q7Z0JBTGMsQUFNZCxnQkFOYyxBQU1kO2dCQU5jLEFBT2QscUJBUGMsQUFPZDtnQkFQYyxBQVFkLG1CQVJjLEFBUWQ7Z0JBUmMsQUFTZCxvQkFUYyxBQVNkLEFBRUY7O2dCQUFJLG1CQUFKLEFBQXVCLEFBQ3ZCO2dCQUFJLGtCQUFKLEFBQXNCLEFBQ3RCO2dCQUFJLGNBQUosQUFBa0IsT0FBTyxBQUNyQjttQ0FBQSxBQUFtQixBQUN0QjtBQUZELG1CQUVPLEFBQUU7bUNBQUEsQUFBbUIsQUFBTztBQUNuQztnQkFBSSxhQUFKLEFBQWlCLE9BQU0sQUFDbkI7a0NBQUEsQUFBa0IsQUFDckI7QUFGRCxtQkFFTyxBQUFFO21DQUFBLEFBQW1CLEFBQU87QUFDbkM7Z0JBQU07d0JBQ0osQUFDVSxBQUNSO3NDQUFPLGNBQUE7O2tDQUFBO29DQUFBLEFBQUs7QUFBTDtBQUFBLGlCQUFBLGtCQUFLLGNBQUE7O2tDQUFBO29DQUFBO0FBQUE7QUFBQSxtQkFBTCxBQUFLLEFBQXFCLGtCQUExQixRQUZULEFBRVMsQUFDUDs2Q0FDRyxjQUFBOztrQ0FBQTtvQ0FBQSxBQUNGO0FBREU7QUFBQSxpQkFBQSxrQkFDRixjQUFBOztrQ0FBQTtvQ0FBQTtBQUFBO0FBQUEsbUJBREUsQUFDRixhQUFpQixLQURmLFFBQ3VCOztrQ0FBQTtvQ0FEdkIsQUFDdUIsQUFDekI7QUFEeUI7QUFBQSxvQ0FDekIsY0FBQTs7a0NBQUE7b0NBQUE7QUFBQTtBQUFBLG1CQUZFLEFBRUYsQUFBbUIsZ0JBRmpCLEFBR0Y7O2tDQUFBO29DQUhFLEFBR0Y7QUFBQTtBQUFBLG9CQUFNLHFCQUFBLGNBQUE7O2tDQUFBO29DQUFBO0FBQUE7QUFBQSxtQkFISixBQUdJLGdCQUFvQixLQUh4QixBQUlGOztrQ0FBQTtvQ0FKRSxBQUlGO0FBQUE7QUFBQSxvQkFBTSxxQkFBQSxjQUFBOztrQ0FBQTtvQ0FBQTtBQUFBO0FBQUEsbUJBSkosQUFJSSxlQUFtQixLQVI1QixBQUlLLEFBTUQ7dUJBWE4sQUFBYyxBQUNaLEFBVVcsQUFHYjtBQWJFLEFBQ0UsYUFGVTs7aURBY1AsQUFBQyxzQkFBRCxBQUFNLFNBQU0sT0FBWixBQUFtQjs4QkFBbkI7Z0NBQVAsQUFBTyxBQUVOO0FBRk07YUFBQTs7OztpQ0FJRSxBQUNMO21DQUNJLEFBQUM7OzhCQUFEO2dDQUFBLEFBQ0E7QUFEQTtBQUFBLGFBQUEsa0JBQ0EsY0FBQTs7OEJBQUE7Z0NBQUEsQUFDQTtBQURBO0FBQUEsK0JBQ0EsY0FBQTs7OEJBQUE7Z0NBQUE7QUFBQTtBQUFBLGVBREEsQUFDQSxBQUNDLGlDQUpMLEFBQ0ksQUFDQSxBQUVDLEFBQUssQUFJYjs7Ozs7aUgsQUE1RDRCOzs7OztpQ0FDdkI7QSx1Q0FBTyxvQkFBSyxNQUFBLEFBQU0sTSxBQUFYLEFBQWlCOzt1Q0FFUixLQUFBLEFBQUssUUFBTCxBQUFhLGEsQUFBYixBQUEwQjs7aUNBQTFDO0E7OzZDQUVLLE1BQUEsQUFBTSxNQURWLEFBQ2dCLEFBQ3JCOzRDQUFRLFFBRkgsQUFFRyxBQUFRLEFBQ2hCOzhDQUFVLFFBSEwsQUFHSyxBQUFRLEFBQ2xCOzRDQUFRLFFBSkgsQUFJRyxBQUFRLEFBQ2hCO2lEQUFhLFFBTFIsQUFLUSxBQUFRLEFBQ3JCOytDQUFXLFFBTk4sQUFNTSxBQUFRLEFBQ25CO2dEQUFZLFEsQUFQUCxBQU9PLEFBQVE7QUFQZixBQUNMOzs7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBMEROLEEsQUFoRXFCOztrQkFnRXJCLEFBQWUiLCJmaWxlIjoiZGV0YWlscy5qcz9lbnRyeSIsInNvdXJjZVJvb3QiOiIvaG9tZS9tZXRyby9Xb3Jrc3BhY2UvRXRoZXJldW0vREMifQ==
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBhZ2VzL3JlY29yZHMvZGV0YWlscy5qcyJdLCJuYW1lcyI6WyJSZWFjdCIsIkNvbXBvbmVudCIsIkxheW91dCIsIkRlYnQiLCJ3ZWIzIiwiQ2FyZCIsIkJ1dHRvbiIsIkljb24iLCJEZXRhaWwiLCJwcm9wcyIsImFkZHJlc3MiLCJsZW5kZXIiLCJib3Jyb3dlciIsImFtb3VudCIsImRlc2NyaXB0aW9uIiwiaXNTZXR0bGVkIiwiaXNTZXR0bGVkU3RyaW5nIiwiaXRlbXMiLCJoZWFkZXIiLCJjb2xvciIsIm1ldGEiLCJmbHVpZCIsInJlbmRlckRldGFpbHMiLCJkZWJ0IiwicXVlcnkiLCJtZXRob2RzIiwiZ2V0RGV0YWlscyIsImNhbGwiLCJkZXRhaWxzIiwidXRpbHMiLCJmcm9tV2VpIl0sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBQUEsQUFBTyxBQUFTOzs7O0FBQ2hCLEFBQU8sQUFBWTs7OztBQUNuQixBQUFPLEFBQVU7Ozs7QUFDakIsQUFBTyxBQUFVOzs7O0FBQ2pCLEFBQVMsQUFBTSxBQUFPOzs7Ozs7O0ksQUFFaEI7Ozs7Ozs7Ozs7O3dDQWNjO3lCQVFaLEtBUlksQUFRUDtnQkFSTyxBQUVkLGlCQUZjLEFBRWQ7Z0JBRmMsQUFHZCxnQkFIYyxBQUdkO2dCQUhjLEFBSWQsa0JBSmMsQUFJZDtnQkFKYyxBQUtkLGdCQUxjLEFBS2Q7Z0JBTGMsQUFNZCxxQkFOYyxBQU1kO2dCQU5jLEFBT2QsbUJBUGMsQUFPZCxBQUVGOztnQkFBSSxrQkFBSixBQUFzQixBQUN0QjtnQkFBSSxhQUFKLEFBQWlCLE9BQU0sQUFDbkI7a0NBQUEsQUFBa0IsQUFDckI7QUFGRCxtQkFFTyxBQUFFO2tDQUFBLEFBQWtCLEFBQWU7QUFDMUM7Z0JBQU07d0NBRU0sY0FBQSxRQUFJLE9BQU8sRUFBQyxPQUFaLEFBQVcsQUFBUTtrQ0FBbkI7b0NBQUEsQUFBaUM7QUFBakM7aUJBQUEsRUFEVixBQUNVLEFBQ1I7c0NBQU8sY0FBQTs7a0NBQUE7b0NBQUEsQUFBSztBQUFMO0FBQUEsaUJBQUEsa0JBQUssY0FBQTs7a0NBQUE7b0NBQUE7QUFBQTtBQUFBLG1CQUFMLEFBQUssQUFBcUIsa0JBQTFCLFFBRlQsQUFFUyxBQUNQOzZDQUNHLGNBQUE7O2tDQUFBO29DQUFBLEFBQ0Q7QUFEQztBQUFBLGlCQUFBLGtCQUNELGNBQUE7O2tDQUFBO29DQUFBO0FBQUE7QUFBQSxtQkFEQyxBQUNELEFBQXFCLGtCQURwQixhQUNpQzs7a0NBQUE7b0NBRGpDLEFBQ2lDLEFBQ25DO0FBRG1DO0FBQUEsb0NBQ25DLGNBQUE7O2tDQUFBO29DQUFBO0FBQUE7QUFBQSxtQkFGRSxBQUVGLGFBQWlCLEtBRmYsUUFFdUI7O2tDQUFBO29DQUZ2QixBQUV1QixBQUN6QjtBQUR5QjtBQUFBLG9DQUN6QixjQUFBOztrQ0FBQTtvQ0FBQTtBQUFBO0FBQUEsbUJBSEUsQUFHRixBQUFtQixnQkFIakIsQUFJRjs7a0NBQUE7b0NBSkUsQUFJRjtBQUFBO0FBQUEsb0JBQU0scUJBQUEsY0FBQTs7a0NBQUE7b0NBQUE7QUFBQTtBQUFBLG1CQUpKLEFBSUksZUFBa0IscUJBQUEsQUFBQyx1Q0FBSyxNQUFOLEFBQVk7a0NBQVo7b0NBSnRCLEFBSXNCO0FBQUE7b0JBQWlDOztrQ0FBQTtvQ0FKdkQsQUFJdUQsQUFBSztBQUFMO0FBQUE7O2tDQUFLO29DQUo1RCxBQUk0RCxBQUM5RDtBQUQ4RDtBQUFBLG9DQUM5RCxBQUFDLHlDQUFPLFNBQVIsTUFBZ0IsTUFBaEIsQUFBcUI7a0NBQXJCO29DQUFBO0FBQUE7bUJBVEgsQUFJSyxBQUtGLEFBRUM7dUJBWk4sQUFBYyxBQUNaLEFBV1csQUFHYjtBQWRFLEFBQ0UsYUFGVTs7aURBZVAsQUFBQyxzQkFBRCxBQUFNLFNBQU0sT0FBWixBQUFtQjs4QkFBbkI7Z0NBQVAsQUFBTyxBQUVOO0FBRk07YUFBQTs7OztpQ0FJRSxBQUNMO21DQUNJLEFBQUM7OzhCQUFEO2dDQUFBLEFBQ0E7QUFEQTtBQUFBLGFBQUEsa0JBQ0EsY0FBQTs7OEJBQUE7Z0NBQUE7QUFBQTtBQUFBLGVBQU07OzhCQUFBO2dDQUFOLEFBQU0sQUFDTjtBQURNO0FBQUEsZ0NBQ04sY0FBQTs7OEJBQUE7Z0NBQUE7QUFBQTtBQUFBLGVBREEsQUFDQSxBQUNDLGlDQUZELEFBRUMsQUFBSyxBQUNOLGlDQUFBLGNBQUE7OzhCQUFBO2dDQUFBO0FBQUE7QUFBQSxlQUxKLEFBQ0ksQUFDQSxBQUdBLEFBSVA7Ozs7O2lILEFBdkQ0Qjs7Ozs7aUNBQ3ZCO0EsdUNBQU8sb0JBQUssTUFBQSxBQUFNLE0sQUFBWCxBQUFpQjs7dUNBRVIsS0FBQSxBQUFLLFFBQUwsQUFBYSxhLEFBQWIsQUFBMEI7O2lDQUExQztBOzs2Q0FFSyxNQUFBLEFBQU0sTUFEVixBQUNnQixBQUNyQjs0Q0FBUSxRQUZILEFBRUcsQUFBUSxBQUNoQjs4Q0FBVSxRQUhMLEFBR0ssQUFBUSxBQUNsQjs0Q0FBUSxjQUFBLEFBQUssTUFBTCxBQUFXLFFBQVEsUUFBbkIsQUFBbUIsQUFBUSxJQUo5QixBQUlHLEFBQThCLEFBQ3RDO2lEQUFhLFFBTFIsQUFLUSxBQUFRLEFBQ3JCOytDQUFXLFEsQUFOTixBQU1NLEFBQVE7QUFOZCxBQUNMOzs7Ozs7Ozs7Ozs7Ozs7Ozs7O0EsQUFOZSxBQTJEckI7O2tCQUFBLEFBQWUiLCJmaWxlIjoiZGV0YWlscy5qcz9lbnRyeSIsInNvdXJjZVJvb3QiOiIvaG9tZS9tZXRyby9Xb3Jrc3BhY2UvRXRoZXJldW0vREMifQ==
