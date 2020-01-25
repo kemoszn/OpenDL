@@ -2,9 +2,15 @@ import React, { Component } from 'react';
 import Layout from '../../components/Layout';
 import Debt from '../../ethereum/debt';
 import web3 from '../../ethereum/web3';
-import { Card, Button,Icon } from 'semantic-ui-react';
+import { Form, Card, Button, Icon, Message } from 'semantic-ui-react';
+import { Router } from '../../routes';
 
 class Detail extends Component {
+    state = {
+      loading: false,
+      errorMessage: ""
+    }
+    
     static async getInitialProps(props) {
     const debt = Debt(props.query.address);
 
@@ -18,6 +24,31 @@ class Detail extends Component {
       isSettled: details[4]
     };
     }
+
+    onSettle = async (event) => {
+      event.preventDefault();
+
+      this.setState({ loading: true, errorMessage: ''});
+      try {
+        const accounts = await web3.eth.getAccounts();
+        const debt = await Debt(this.props.address);
+        await web3.eth.sendTransaction({
+          from: accounts[0],
+          to: this.props.lender,
+          value: web3.utils.toWei(this.props.amount, 'ether')
+        });
+        await debt.methods.settleDebt().send({from: accounts[0]});
+        console.log(this.props.address);
+        //console.log(this.props.query.address);
+        console.log(debt);
+
+        Router.replaceRoute(`/records/${this.props.address}`);
+        this.setState({ loading: false });
+      } catch (err) {
+        this.setState({ loading: false, errorMessage: err.message });
+      }
+    }  
+
     renderDetails() {
     const {
       address,  
@@ -41,7 +72,10 @@ class Detail extends Component {
          <b> Lender:</b> {lender} <br/>
          <b> borrower: </b>{borrower}
          <br/> <b> Settled: </b> <Icon name={isSettledString} />  <br/><hr/>
-         <Button primary size="small"> Settle </Button>
+         <Form onSubmit={this.onSettle} error={!!this.state.errorMessage}>
+           <Message error header="Oops!" content={this.state.errorMessage}/>
+           <Button loading={this.state.loading} primary size="small"> Settle </Button>
+         </Form>
           </div>),
           fluid: true
       }]
