@@ -4,9 +4,9 @@ contract DebtFactory {
     address[] public debts;
     event ContractCreated(address newAddress);
     
-    function createDebt(uint _amount, address _borrower, string _description) public returns (address){
+    function createDebt(uint _amount, address _borrower, string _description, string _txHash) public returns (address){
         require (msg.sender != _borrower);
-        address newDebt = new Debt(_amount, msg.sender, _borrower, _description);
+        address newDebt = new Debt(_amount, msg.sender, _borrower, _description, _txHash);
         debts.push(newDebt);
         ContractCreated(newDebt);
         return newDebt;
@@ -23,13 +23,15 @@ contract Debt {
     address public lender;
     string public description;
     bool public is_settled;
+    string public txHash;
     
     
-    function Debt(uint _amount, address _lender, address _borrower, string _description) public {
+    function Debt(uint _amount, address _lender, address _borrower, string _description, string _txHash) public {
         lender = _lender;
         amount = _amount;
         borrower = _borrower;
         description = _description;
+        txHash = _txHash;
         is_settled = false;
     }
     
@@ -38,14 +40,15 @@ contract Debt {
     } 
 
     function getDetails() public view returns (
-      address, address, uint, string, bool
+      address, address, uint, string, bool, string
       ) {
         return (
           lender,
           borrower,
           amount,
           description,
-          is_settled
+          is_settled,
+          txHash
         );
     }
     

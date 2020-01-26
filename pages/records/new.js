@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Layout from '../../components/Layout';
-import { Form, Button, Input, Message } from 'semantic-ui-react';
+import { Form, Button, Input, Message, Icon } from 'semantic-ui-react';
 import factory from '../../ethereum/factory';
 //import 'https://github.com/web3-js/scrypt-shim';
 //var scrypt = require('scrypt-shim');
@@ -14,7 +14,8 @@ class NewRecord extends Component {
         amount: "",
         errorMessage: "",
         loading: false,
-        redirectedAddress: ""
+        redirectedAddress: "",
+        txHash: ""
     }
 
     onSubmit = async (event)=> {
@@ -28,10 +29,11 @@ class NewRecord extends Component {
                 from: accounts[0],
                 to: this.state.borrower,
                 value: web3.utils.toWei(this.state.amount, 'ether')
-            });
-
+            }).then((receipt) => this.setState({ txHash: receipt.transactionHash}));
+            console.log(this.state.txHash);
             await factory.methods
-                .createDebt(web3.utils.toWei(this.state.amount, 'ether'), this.state.borrower, this.state.description)
+                .createDebt(web3.utils.toWei(this.state.amount, 'ether'), 
+                this.state.borrower, this.state.description, this.state.txHash)
                 .send({from: accounts[0]})
                 .then((receipt) => this.setState({ redirectedAddress: receipt.events.ContractCreated.returnValues[0] })
                 );
@@ -45,8 +47,17 @@ class NewRecord extends Component {
     render(){
         return (
             <Layout>
-              <br/> 
-            <Form onSubmit={this.onSubmit} error={!!this.state.errorMessage}>
+              <br/>
+              <div>
+                <Message compact="true">
+                    <Message.Header><Icon name="exclamation circle"></Icon>Note</Message.Header>
+                        <p>
+                        Make sure you're connected to <a href="https://www.metamask.io">MetaMask</a> or any wallet provider and have sufficient funds. 
+                        </p>
+                </Message>
+            </div>
+            <br/>
+            <Form widths="equal" onSubmit={this.onSubmit} error={!!this.state.errorMessage}>
                 <Form.Field>
                     <label> Description</label>
                     <Form.Input width={8} value={this.state.description}
@@ -59,7 +70,7 @@ class NewRecord extends Component {
                         </Form.Field>
                         <Form.Field>
                     <label> Amount</label>
-                    <Input  label="ETH" width={8}
+                    <Input fluid="false" label="ETH" 
                         labelPosition="right"
                         value={this.state.amount}
                         onChange={event => this.setState ({ amount: event.target.value}) }/>
