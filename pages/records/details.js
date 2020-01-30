@@ -18,18 +18,17 @@ class Detail extends Component {
     }
     async componentDidMount(){
       const accounts = await web3.eth.getAccounts();
-      this.setState ({ userAccount: accounts[0] });
+      this.setState ({ userAccount: accounts[0], str: this.props.address });
       await web3.eth.getTransaction(this.props.txHash)
         .then((data)=> this.setState({from: data.from, to: data.to,
          value: web3.utils.fromWei(data.value, "ether"),
          blockNumber: data.blockNumber }));
-
       const timestamp = await web3.eth.getBlock(this.state.blockNumber);
       const d = new Date(timestamp.timestamp * 1000);
       const s = d.toUTCString();
       this.setState({ timestamp: s });
-
-      console.log(this.state.timestamp);
+      const strLink1 = 'https://rinkeby.etherscan.io/address/' + this.props.address;
+      document.getElementById("link1").setAttribute("href", strLink1)
     }
 
     static async getInitialProps(props) {
@@ -61,9 +60,6 @@ class Detail extends Component {
           value: web3.utils.toWei(this.props.amount, 'ether')
         });
         await debt.methods.settleDebt().send({from: accounts[0]});
-        console.log(this.props.address);
-        //console.log(this.props.query.address);
-        console.log(debt);
 
         Router.replaceRoute(`/records/${this.props.address}`);
         this.setState({ loading: false });
@@ -80,20 +76,18 @@ class Detail extends Component {
       amount,
       description,
       isSettled,
-     // account
     } = this.props;
     let isSettledString = isSettled;
     if (isSettled == false){
         isSettledString = 'times circle'
     } else { isSettledString = 'check circle'}
-    console.log(borrower);
-    console.log(this.state.userAccount);
     const items = [
       {
-        header: <h3 style={{color: "#2185d0" }}>{address}</h3>,
-        meta: (<div><b>Debt Amount: </b>{amount}  ETH</div>),
+        header: (<p style={{color: "#2185d0", textSize: "10px" }}><b>{address}</b> <Icon name="copy outline"></Icon></p> ),
+        meta: (<div><a id="link1">See in Etherscan <Icon name="external alternate"></Icon></a></div>),
         description:
           (<div>
+          <b>Debt Amount: </b>{amount}  ETH <br/>
           <b>Description: </b>{description} <br/>
          <b> Lender:</b> {lender} <br/>
          <b> borrower: </b>{borrower}
@@ -117,7 +111,7 @@ class Detail extends Component {
       const { txHash } = this.props;
       const items = [
         {
-          header: <h4 style={{color: "#2185d0" }}>{txHash}</h4>,
+          header: <p style={{color: "#2185d0" }}><b>{txHash}</b></p>,
           description: (<div><b> From: </b> {this.state.from} <br/>
           <b>To:</b> {this.state.to}
           <br/><b>Amount Paid: </b>{this.state.value} ETH</div>),
