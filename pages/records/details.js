@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import QRCode from 'qrcode.react'
 import Layout from '../../components/Layout';
 import Debt from '../../ethereum/debt';
 import web3 from '../../ethereum/web3';
-import { Form, Card, Button, Icon, Message } from 'semantic-ui-react';
+import { Form, Card, Button, Icon, Message, Grid } from 'semantic-ui-react';
 import { Router } from '../../routes';
 
 class Detail extends Component {
@@ -81,17 +82,27 @@ class Detail extends Component {
     if (isSettled == false){
         isSettledString = 'times circle'
     } else { isSettledString = 'check circle'}
+    const addressQR = 'https://rinkeby.etherscan.io/address/' + address;
     const items = [
       {
-        header: (<p style={{color: "#2185d0", textSize: "10px" }}><b>{address}</b> <Icon name="copy outline"></Icon></p> ),
+        header: (<div><p style={{color: "#2185d0" }}><b>{address}</b> </p> </div> ),
         meta: (<div><a id="link1">See in Etherscan <Icon name="external alternate"></Icon></a></div>),
         description:
           (<div>
+          <Grid coloumns={2}>
+          <Grid.Row>
+          <Grid.Column width={13}> <br/><br/>
           <b>Debt Amount: </b>{amount}  ETH <br/>
           <b>Description: </b>{description} <br/>
          <b> Lender:</b> {lender} <br/>
          <b> borrower: </b>{borrower}
-         <br/> <b> Settled: </b> <Icon name={isSettledString} />  
+         <br/> <b> Settled: </b> <Icon name={isSettledString} /> 
+         </Grid.Column>
+         <Grid.Column width={3}>
+         <QRCode size={150} value={addressQR} />
+         </Grid.Column> 
+         </Grid.Row>
+         </Grid>
           { borrower==this.state.userAccount && !isSettled &&
          <div>
          <hr/>
@@ -109,12 +120,24 @@ class Detail extends Component {
 
     renderTransaction() {
       const { txHash } = this.props;
+      const txQR = 'https://rinkeby.etherscan.io/tx/' + txHash;
       const items = [
         {
           header: <p style={{color: "#2185d0" }}><b>{txHash}</b></p>,
-          description: (<div><b> From: </b> {this.state.from} <br/>
+          description: (<div>
+          <Grid coloumns={2}>
+          <Grid.Row>
+          <Grid.Column width={13}> <br/>
+          <b> From: </b> {this.state.from} <br/>
           <b>To:</b> {this.state.to}
-          <br/><b>Amount Paid: </b>{this.state.value} ETH</div>),
+          <br/><b>Amount Paid: </b>{this.state.value} ETH <br/>
+          </Grid.Column>
+         <Grid.Column width={3}>
+         <QRCode size={100} value={txQR} />
+         </Grid.Column> 
+         </Grid.Row>
+         </Grid>
+          </div>),
           meta: `${this.state.timestamp}` ,
           fluid: true
         }]
